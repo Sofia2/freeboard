@@ -10,25 +10,94 @@
     <link href="css/freeboard.min.css" rel="stylesheet" />
     <script src="js/freeboard.thirdparty.min.js"></script>
     <script type="text/javascript">
-        head.js("js/freeboard_plugins.min.js",
-                // *** Load more plugins here ***
-                function(){
-                    $(function()
-                    { //DOM Ready
-                        freeboard.initialize(true);
-
-                        var hashpattern = window.location.hash.match(/(&|#)source=([^&]+)/);
-                        if (hashpattern !== null) {
-                            $.getJSON(hashpattern[2], function(data) {
-                                freeboard.loadDashboard(data, function() {
-                                    freeboard.setEditing(false);
-                                });
-                            });
-                        }
-
-                    });
-                });
-    </script>
+        head.js("js/freeboard.js","js/freeboard.plugins.min.js", "../freeboard_api/datasources", "plugins/thirdparty/jquery.keyframes.min.js", "plugins/thirdparty/widget.ragIndicator.js",
+function(){                  $(function()
+                  { //DOM Ready
+                      freeboard.initialize(true);
+                      var hash = window.location.hash;
+                      if (hash !== null) {
+                          $.get("../freeboard_api/dashboard/"+hash.substring(1), function(data) {
+							var datap=JSON.parse(data);
+							if (!datap.empty){
+								freeboard.loadDashboard(datap, function() {
+									freeboard.setEditing(false);
+									});
+								}
+	                        });
+	                     }
+	                 });
+	            });
+	</script>
+	<style>
+	.board-toolbar li label{
+		color:#eaeaea;
+		font-family: "Neo Sans Light", Helvetica, arial, sans-serif;
+		font-size: 12px;
+		
+	}
+	body{
+		background-color: #eaeaea;
+	}
+	.table-operation{
+		color:#eaeaea; 
+		font-family: "Neo Sans Light", Helvetica, arial, sans-serif;
+		font-size: 12px;
+	}
+	
+	.site-title{
+		pointer-events: none;
+	    width: 160px;
+	    height: 80px;
+	    font-family: "Neo Sans Light", Helvetica, arial, sans-serif;
+	    font-size: 25px;
+	    font-weight: bold;
+	    color: #FFF;
+	}
+	.site-title span{
+		background-image: url("img/logo_sofia2_bk_sm.png");
+		width: 50px;
+	    height: 60px;
+	    font-family: "Neo Sans Bold", Helvetica, arial, sans-serif;
+	    display: inline-block;
+	    padding: 14px 0 0 10px;
+	    margin-left: 3px;
+	    color: #FFF;
+	    font-size: 28px;
+	}
+	
+	.board-toolbar.vertical li{
+		padding-left: inherit;
+	}
+	
+	h2.title{
+		 font-family: "Neo Sans Light", Helvetica, arial, sans-serif;
+		 font-weight: bold;
+		 font-size: 15px; 
+	}
+	.gridster .gs_w{
+		
+		background: #FFFFFF;
+    	box-shadow: 3px 3px 3px grey;
+		
+	}
+	.gridster header{
+		background: #FFFFFF;
+	}
+	
+	.text-button{
+		font-family: "Neo Sans Light", Helvetica, arial, sans-serif;
+		color:#eaeaea;
+	}
+	#admin-bar{
+		background-color: #333333 !important;
+	}
+	
+	.icon-plus{
+		color: #FFFFFF;
+	}
+	
+	
+	</style>
 </head>
 <body>
 <div id="board-content">
@@ -42,7 +111,8 @@
     <div id="admin-bar">
         <div id="admin-menu">
             <div id="board-tools">
-                <h1 id="board-logo" class="title bordered">freeboard</h1>
+            	<a class="title site-title" >Sofia<span> 2</span></a>
+                <!-- h1 id="board-logo" class="title bordered">Freeboard</h1-->
                 <div id="board-actions">
                     <ul class="board-toolbar vertical">
                         <li data-bind="click: loadDashboardFromLocalFile"><i id="full-screen-icon" class="icon-folder-open icon-white"></i><label id="full-screen">Load Freeboard</label></li>
@@ -113,13 +183,13 @@
             <h1 data-bind="text: title"></h1>
             <ul class="board-toolbar pane-tools">
                 <li data-bind="pluginEditor: {operation: 'add', type: 'widget'}">
-                    <i class="icon-plus icon-white"></i>
+                    <i class="icon-plus" style="color: #8b8b8b;"></i>
                 </li>
                 <li data-bind="pluginEditor: {operation: 'edit', type: 'pane'}">
-                    <i class="icon-wrench icon-white"></i>
+                    <i class="icon-wrench"></i>
                 </li>
                 <li data-bind="pluginEditor: {operation: 'delete', type: 'pane'}">
-                    <i class="icon-trash icon-white"></i>
+                    <i class="icon-trash"></i>
                 </li>
             </ul>
         </header>
